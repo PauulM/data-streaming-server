@@ -1,0 +1,12 @@
+#PostgreSQL Local
+spring.datasource.url=jdbc:postgresql://localhost:5432/database_name?currentSchema=schema_name
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+#PostgreSQL JNDI
+#spring.datasource.jndi-name=java:/StreamingPostgresDS
+
+#JPA
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
