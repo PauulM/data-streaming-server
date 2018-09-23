@@ -1,24 +1,31 @@
 package datastreaming.server.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "artists")
-public class Artist {
+public class Artist implements Serializable {
 
+    private static final long serialVersionUID = 8969018447256598435L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artistid")
-    public Long id;
+    private Long id;
 
     @Column(name = "artistname")
-    public String name;
+    private String name;
 
     @Column(name = "artistpath")
-    public String directoryPath;
+    private String directoryPath;
 
     @Column(name = "artistartworkfilepath")
-    public String artworkDirectoryPath;
+    private String artworkDirectoryPath;
+
+    @OneToMany(mappedBy = "artist")
+    private List<Album> albums;
 
     public Artist() {
     }
@@ -59,6 +66,14 @@ public class Artist {
 
     public void setArtworkDirectoryPath(String artworkDirectoryPath) {
         this.artworkDirectoryPath = artworkDirectoryPath;
+    }
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
     }
 
     @Override
