@@ -34,7 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
+        web
+                .ignoring()
+                    .antMatchers("/test/album");
     }
 
     @Override
@@ -73,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean

@@ -2,12 +2,10 @@ package datastreaming.server.security;
 
 import datastreaming.server.model.AppClient;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ClientDetailsImpl implements ClientDetails {
 
@@ -49,7 +47,9 @@ public class ClientDetailsImpl implements ClientDetails {
 
     @Override
     public Set<String> getScope() {
-        return null;
+        HashSet<String> scopes = new HashSet<>();
+        scopes.add("USE_APP");
+        return scopes;
     }
 
     @Override
@@ -66,17 +66,20 @@ public class ClientDetailsImpl implements ClientDetails {
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
+        return authorities;
     }
 
     @Override
     public Integer getAccessTokenValiditySeconds() {
-        return null;
+        return 3600;
     }
 
     @Override
     public Integer getRefreshTokenValiditySeconds() {
-        return null;
+        //30 days
+        return 2592000;
     }
 
     @Override
@@ -86,6 +89,6 @@ public class ClientDetailsImpl implements ClientDetails {
 
     @Override
     public Map<String, Object> getAdditionalInformation() {
-        return null;
+        return new HashMap<>();
     }
 }
