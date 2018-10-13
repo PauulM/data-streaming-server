@@ -48,6 +48,15 @@ public class AppClient {
     )
     private List<ClientGrantType> clientGrantTypes;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "usedclientscopes",
+            joinColumns = @JoinColumn(name = "clientid", referencedColumnName = "clientid"),
+            inverseJoinColumns = @JoinColumn(name = "scopeid", referencedColumnName = "id")
+    )
+    private List<ClientScope> clientScopes;
+
     public Long getId() {
         return id;
     }
@@ -102,5 +111,13 @@ public class AppClient {
 
     public void setClientGrantTypes(List<ClientGrantType> clientGrantTypes) {
         this.clientGrantTypes = clientGrantTypes;
+    }
+
+    public List<ClientScope> getClientScopes() {
+        return clientScopes;
+    }
+
+    public void setClientScopes(List<ClientScope> clientScopes) {
+        this.clientScopes = clientScopes;
     }
 }

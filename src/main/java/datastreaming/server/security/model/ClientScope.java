@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "clientauthorities")
-public class ClientAuthority {
+@Table(name = "clientscopes")
+public class ClientScope {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class ClientAuthority {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientAuthority that = (ClientAuthority) o;
+        ClientScope that = (ClientScope) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name);
     }

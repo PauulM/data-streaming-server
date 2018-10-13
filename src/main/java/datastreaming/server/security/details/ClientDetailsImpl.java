@@ -14,6 +14,8 @@ public class ClientDetailsImpl implements ClientDetails {
 
     private final String ROLE_PREFIX = "ROLE_";
 
+    private final String SCOPE_PREFIX = "SCOPE_";
+
     public ClientDetailsImpl(AppClient appClient) {
         this.appClient = appClient;
     }
@@ -50,9 +52,10 @@ public class ClientDetailsImpl implements ClientDetails {
 
     @Override
     public Set<String> getScope() {
-        HashSet<String> scopes = new HashSet<>();
-        scopes.add("USE_APP");
-        return scopes;
+        return appClient.getClientScopes()
+                .stream()
+                .map(scope -> SCOPE_PREFIX + scope.getName())
+                .collect(Collectors.toSet());
     }
 
     @Override
