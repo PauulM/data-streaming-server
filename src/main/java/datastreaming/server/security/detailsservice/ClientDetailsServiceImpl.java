@@ -1,7 +1,7 @@
-package datastreaming.server.service.implementation;
+package datastreaming.server.security.detailsservice;
 
 import datastreaming.server.respository.AppClientRepository;
-import datastreaming.server.security.ClientDetailsImpl;
+import datastreaming.server.security.details.ClientDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.provider.ClientDetails;

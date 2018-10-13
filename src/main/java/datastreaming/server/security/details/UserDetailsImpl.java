@@ -1,4 +1,4 @@
-package datastreaming.server.security;
+package datastreaming.server.security.details;
 
 import datastreaming.server.model.AppUser;
 import org.springframework.security.core.GrantedAuthority;

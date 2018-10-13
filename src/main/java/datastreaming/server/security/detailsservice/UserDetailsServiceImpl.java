@@ -1,7 +1,7 @@
-package datastreaming.server.service.implementation;
+package datastreaming.server.security.detailsservice;
 
 import datastreaming.server.respository.AppUserRepository;
-import datastreaming.server.security.UserDetailsImpl;
+import datastreaming.server.security.details.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
