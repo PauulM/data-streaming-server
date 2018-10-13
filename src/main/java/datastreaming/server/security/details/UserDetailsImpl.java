@@ -1,6 +1,7 @@
 package datastreaming.server.security.details;
 
 import datastreaming.server.model.AppUser;
+import datastreaming.server.model.UserAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,8 @@ public class UserDetailsImpl implements UserDetails {
 
     private AppUser appUser;
 
+    private final String ROLE_PREFIX = "ROLE_";
+
     public UserDetailsImpl(AppUser appUser) {
         this.appUser = appUser;
     }
@@ -20,7 +23,9 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        for(UserAuthority authority : appUser.getUserAuthorities()){
+            authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + authority.getName()));
+        }
         return authorities;
     }
 

@@ -1,6 +1,7 @@
 package datastreaming.server.security.details;
 
 import datastreaming.server.model.AppClient;
+import datastreaming.server.model.ClientAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -10,6 +11,8 @@ import java.util.*;
 public class ClientDetailsImpl implements ClientDetails {
 
     private AppClient appClient;
+
+    private final String ROLE_PREFIX = "ROLE_";
 
     public ClientDetailsImpl(AppClient appClient) {
         this.appClient = appClient;
@@ -27,7 +30,7 @@ public class ClientDetailsImpl implements ClientDetails {
 
     @Override
     public Set<String> getResourceIds() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
@@ -61,13 +64,15 @@ public class ClientDetailsImpl implements ClientDetails {
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
+        for (ClientAuthority authority : appClient.getClientAuthorities()){
+            authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + authority.getName()));
+        }
         return authorities;
     }
 

@@ -2,6 +2,7 @@ package datastreaming.server.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "clients")
@@ -19,6 +20,14 @@ public class AppClient {
     @Column(name = "clientsecret")
     @NotNull
     private String clientSecret;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usedclientauthorities",
+            joinColumns = @JoinColumn(name = "clientid", referencedColumnName = "clientid"),
+            inverseJoinColumns = @JoinColumn(name = "clientauthorityid", referencedColumnName = "id")
+    )
+    private List<ClientAuthority> clientAuthorities;
 
     public Long getId() {
         return id;
@@ -42,5 +51,13 @@ public class AppClient {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    public List<ClientAuthority> getClientAuthorities() {
+        return clientAuthorities;
+    }
+
+    public void setClientAuthorities(List<ClientAuthority> clientAuthorities) {
+        this.clientAuthorities = clientAuthorities;
     }
 }
