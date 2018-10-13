@@ -1,8 +1,8 @@
-package datastreaming.server.service.implementation;
+package datastreaming.server.security.service.implementation;
 
-import datastreaming.server.model.AppUser;
-import datastreaming.server.respository.AppUserRepository;
-import datastreaming.server.service._interface.AppUserService;
+import datastreaming.server.security.model.AppUser;
+import datastreaming.server.security.repository.AppUserRepository;
+import datastreaming.server.security.service._interface.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

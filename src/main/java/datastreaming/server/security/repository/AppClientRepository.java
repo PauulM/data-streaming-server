@@ -1,6 +1,6 @@
-package datastreaming.server.respository;
+package datastreaming.server.security.repository;
 
-import datastreaming.server.model.AppClient;
+import datastreaming.server.security.model.AppClient;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

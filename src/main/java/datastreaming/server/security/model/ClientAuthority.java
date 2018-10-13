@@ -1,4 +1,4 @@
-package datastreaming.server.model;
+package datastreaming.server.security.model;
 
 import javax.persistence.*;
 

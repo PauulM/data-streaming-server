@@ -1,4 +1,7 @@
-package datastreaming.server.model;
+package datastreaming.server.security.model;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,7 +24,8 @@ public class AppUser {
     @NotNull
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "useduserauthorities",
             joinColumns = @JoinColumn(name = "appuserid", referencedColumnName = "userid"),

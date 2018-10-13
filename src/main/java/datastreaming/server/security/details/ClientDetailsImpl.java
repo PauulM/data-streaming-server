@@ -1,12 +1,12 @@
 package datastreaming.server.security.details;
 
-import datastreaming.server.model.AppClient;
-import datastreaming.server.model.ClientAuthority;
+import datastreaming.server.security.model.AppClient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ClientDetailsImpl implements ClientDetails {
 
@@ -57,9 +57,10 @@ public class ClientDetailsImpl implements ClientDetails {
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        Set<String> authorizedGrantTypes = new HashSet<>();
-        authorizedGrantTypes.add("password");
-        return authorizedGrantTypes;
+        return appClient.getClientGrantTypes()
+                .stream()
+                .map(grantType -> grantType.getName())
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -69,22 +70,22 @@ public class ClientDetailsImpl implements ClientDetails {
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (ClientAuthority authority : appClient.getClientAuthorities()){
-            authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + authority.getName()));
-        }
-        return authorities;
+        return appClient.getClientAuthorities()
+                .stream()
+                .map(authority -> {
+                    return new SimpleGrantedAuthority(ROLE_PREFIX + authority.getName());
+                })
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Integer getAccessTokenValiditySeconds() {
-        return 3600;
+        return appClient.getAccessTokenValiditySeconds();
     }
 
     @Override
     public Integer getRefreshTokenValiditySeconds() {
-        //30 days
-        return 2592000;
+        return appClient.getRefreshTokenValiditySeconds();
     }
 
     @Override

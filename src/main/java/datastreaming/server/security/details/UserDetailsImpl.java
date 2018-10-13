@@ -1,14 +1,12 @@
 package datastreaming.server.security.details;
 
-import datastreaming.server.model.AppUser;
-import datastreaming.server.model.UserAuthority;
+import datastreaming.server.security.model.AppUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -22,11 +20,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for(UserAuthority authority : appUser.getUserAuthorities()){
-            authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + authority.getName()));
-        }
-        return authorities;
+        return appUser.getUserAuthorities()
+                .stream()
+                .map(authority -> {
+                    return new SimpleGrantedAuthority(ROLE_PREFIX + authority.getName());
+                })
+                .collect(Collectors.toSet());
     }
 
     @Override
