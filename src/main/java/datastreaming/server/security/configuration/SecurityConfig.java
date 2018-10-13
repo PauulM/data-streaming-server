@@ -15,28 +15,28 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final Integer ENCODING_STRENGTH = 4;
+
     @Autowired
     @Qualifier("UserDetailsService")
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    @Qualifier("ClientDetailsService")
-    private ClientDetailsService clientDetailsService;
-
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) throws Exception{
         web
-                .ignoring()
-                    .antMatchers("/test/album");
+                .ignoring();
     }
 
     @Override
@@ -48,16 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .anyRequest()
                     .authenticated()
-                .and().
-            csrf()
-                .disable()
+                .and()
             .headers()
                 .frameOptions()
                 .disable();
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth
                 .authenticationProvider(userAuthenticationProvider());
     }
@@ -69,13 +67,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public TokenStore tokenStore() {
-        return new InMemoryTokenStore();
+    public TokenStore jwtTokenStore(){
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter(){
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        return converter;
+    }
+
+    @Bean
+    public TokenEnhancerChain tokenEnhancerChain(){
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+        enhancerChain.setTokenEnhancers(Arrays.asList(jwtAccessTokenConverter()));
+        return enhancerChain;
     }
 
     @Bean
     public BCryptPasswordEncoder encoder(){
-        return new BCryptPasswordEncoder(4);
+        return new BCryptPasswordEncoder(ENCODING_STRENGTH);
     }
 
     @Bean
