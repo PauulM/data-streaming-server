@@ -1,7 +1,8 @@
 package datastreaming.server.security.detailsservice;
 
-import datastreaming.server.security.repository.AppUserRepository;
 import datastreaming.server.security.details.UserDetailsImpl;
+import datastreaming.server.security.model.AppUser;
+import datastreaming.server.security.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new UserDetailsImpl(appUserRepository.findByUserName(username));
+        AppUser appUser = appUserRepository.findByUserName(username);
+        if(appUser == null)
+            throw new UsernameNotFoundException("Invalid user");
+        return new UserDetailsImpl(appUser);
     }
 }

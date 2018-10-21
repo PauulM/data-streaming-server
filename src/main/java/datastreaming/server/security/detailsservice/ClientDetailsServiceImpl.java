@@ -1,5 +1,6 @@
 package datastreaming.server.security.detailsservice;
 
+import datastreaming.server.security.model.AppClient;
 import datastreaming.server.security.repository.AppClientRepository;
 import datastreaming.server.security.details.ClientDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
 
     @Override
     public ClientDetails loadClientByClientId(String s) throws ClientRegistrationException {
-        return new ClientDetailsImpl(appClientRepository.findByClientName(s));
+        AppClient appClient = appClientRepository.findByClientName(s);
+        if(appClient == null)
+            throw new ClientRegistrationException("Invalid client");
+        return new ClientDetailsImpl(appClient);
     }
 }
