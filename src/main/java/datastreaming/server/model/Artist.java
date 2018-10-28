@@ -1,5 +1,7 @@
 package datastreaming.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -25,6 +27,7 @@ public class Artist implements Serializable {
     private String artworkDirectoryPath;
 
     @OneToMany(mappedBy = "artist")
+    @JsonIgnore
     private List<Album> albums;
 
     public Artist() {
