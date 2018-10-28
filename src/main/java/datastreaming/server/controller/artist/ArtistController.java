@@ -21,18 +21,18 @@ public class ArtistController {
     private ArtistService artistService;
 
     @GetMapping
-    private ResponseEntity<List<Artist>> getAllArtists(){
+    public ResponseEntity<List<Artist>> getAllArtists(){
         List<Artist> artists = artistService.retrieveAll();
         return ResponseEntity.status(200).body(artists);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Artist> getArtistById(@PathVariable Long id) throws ArtistNotFoundByIdException {
+    public ResponseEntity<Artist> getArtistById(@PathVariable Long id) throws ArtistNotFoundByIdException {
         return ResponseEntity.status(200).body(artistService.retrieveArtistById(id));
     }
 
     @GetMapping("/{id}/albums")
-    private ResponseEntity<List<Album>> getArtistAlbums(@PathVariable Long id) throws ArtistNotFoundByIdException{
+    public ResponseEntity<List<Album>> getArtistAlbums(@PathVariable Long id) throws ArtistNotFoundByIdException{
         List<Album> albums = artistService.retrieveAlbumsByArtistId(id);
         return ResponseEntity.status(200).body(albums);
     }

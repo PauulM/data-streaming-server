@@ -2,6 +2,7 @@ package datastreaming.server.controller.album;
 
 import datastreaming.server.exception.AlbumNotFoundByIdException;
 import datastreaming.server.model.Album;
+import datastreaming.server.model.Song;
 import datastreaming.server.service._interface.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,17 @@ public class AlbumController {
     private AlbumService albumService;
 
     @GetMapping
-    private ResponseEntity<List<Album>> getAllAlbums(){
+    public ResponseEntity<List<Album>> getAllAlbums(){
         return ResponseEntity.status(200).body(albumService.retrieveAll());
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Album> getAlbumById(@PathVariable Long id) throws AlbumNotFoundByIdException {
+    public ResponseEntity<Album> getAlbumById(@PathVariable Long id) throws AlbumNotFoundByIdException {
         return ResponseEntity.status(200).body(albumService.retrieveAlbumById(id));
+    }
+
+    @GetMapping("/{id}/songs")
+    public ResponseEntity<List<Song>> getAlbumSongs(@PathVariable Long id) throws AlbumNotFoundByIdException{
+        return ResponseEntity.status(200).body(albumService.retrieveAlbumSongs(id));
     }
 }
