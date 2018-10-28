@@ -3,26 +3,37 @@ package datastreaming.server.exception;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-public class ArtistNotFoundByIdException extends NotFoundByIdException {
-    public ArtistNotFoundByIdException() {
+public class AlbumNotFoundByIdException extends NotFoundByIdException {
+
+    public AlbumNotFoundByIdException() {
         super();
     }
 
-    public ArtistNotFoundByIdException(String message) {
-        super(message);
-    }
-
-    public ArtistNotFoundByIdException(Long id) {
+    public AlbumNotFoundByIdException(Long id) {
         super(id);
     }
 
-    public ArtistNotFoundByIdException(String message, Long id) {
+    public AlbumNotFoundByIdException(String message, Long id) {
         super(message, id);
+    }
+
+    public AlbumNotFoundByIdException(String message) {
+        super(message);
     }
 
     @Override
     public ExceptionMessageAndId getExceptionMessageAndId() {
         return super.getExceptionMessageAndId();
+    }
+
+    @Override
+    public Long getId() {
+        return super.getId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
     }
 
     @Override

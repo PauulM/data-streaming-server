@@ -3,7 +3,7 @@ package datastreaming.server.exception;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-public class IdNotFoundException extends Exception {
+public class NotFoundByIdException extends Exception {
 
     public class ExceptionMessageAndId {
 
@@ -35,21 +35,21 @@ public class IdNotFoundException extends Exception {
     private static final long serialVersionUID = -3762813200832659187L;
     private Long id;
 
-    public IdNotFoundException() {
+    public NotFoundByIdException() {
         super();
     }
 
-    public IdNotFoundException(Long id) {
+    public NotFoundByIdException(Long id) {
         super();
         this.id = id;
     }
 
-    public IdNotFoundException(String message, Long id) {
+    public NotFoundByIdException(String message, Long id) {
         super(message);
         this.id = id;
     }
 
-    public IdNotFoundException(String message) {
+    public NotFoundByIdException(String message) {
         super(message);
     }
 

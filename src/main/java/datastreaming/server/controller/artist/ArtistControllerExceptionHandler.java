@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ArtistControllerExceptionHandler {
 
     @ExceptionHandler(ArtistNotFoundByIdException.class)
-    public ResponseEntity handleArtistNotFound(ArtistNotFoundByIdException ex){
+    public ResponseEntity handleArtistNotFoundById(ArtistNotFoundByIdException ex){
         return ResponseEntity.status(404).body(ex.getExceptionMessageAndId());
     }
 }

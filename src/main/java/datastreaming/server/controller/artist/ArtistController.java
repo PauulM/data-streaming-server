@@ -1,6 +1,7 @@
 package datastreaming.server.controller.artist;
 
 import datastreaming.server.exception.ArtistNotFoundByIdException;
+import datastreaming.server.model.Album;
 import datastreaming.server.model.Artist;
 import datastreaming.server.service._interface.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,11 @@ public class ArtistController {
     @GetMapping("/{id}")
     private ResponseEntity<Artist> getArtistById(@PathVariable Long id) throws ArtistNotFoundByIdException {
         return ResponseEntity.status(200).body(artistService.retrieveArtistById(id));
+    }
+
+    @GetMapping("/{id}/albums")
+    private ResponseEntity<List<Album>> getArtistAlbums(@PathVariable Long id) throws ArtistNotFoundByIdException{
+        List<Album> albums = artistService.retrieveAlbumsByArtistId(id);
+        return ResponseEntity.status(200).body(albums);
     }
 }

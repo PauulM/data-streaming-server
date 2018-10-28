@@ -1,5 +1,7 @@
 package datastreaming.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -35,6 +37,7 @@ public class Album implements Serializable {
     private String albumPath;
 
     @OneToMany(mappedBy = "album")
+    @JsonIgnore
     private List<Song> songs;
 
     public Long getId() {
