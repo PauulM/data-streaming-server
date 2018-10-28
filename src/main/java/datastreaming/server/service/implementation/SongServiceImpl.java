@@ -29,4 +29,9 @@ public class SongServiceImpl implements SongService {
             throw new SongNotFoundByIdException("Song with id " + id + " does not exist", id);
         return song.get();
     }
+
+    @Override
+    public List<Song> searchSongsByName(String queryString) {
+        return songRepository.searchSongsByName(queryString);
+    }
 }

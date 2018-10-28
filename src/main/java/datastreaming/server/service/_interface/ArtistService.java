@@ -11,4 +11,5 @@ public interface ArtistService {
     Artist retrieveArtistByName(String name);
     Artist retrieveArtistById(Long id) throws ArtistNotFoundByIdException;
     List<Album> retrieveAlbumsByArtistId(Long artistId) throws ArtistNotFoundByIdException;
+    List<Artist> searchArtistsByName(String queryString);
 }

@@ -40,4 +40,9 @@ public class AlbumServiceImpl implements AlbumService {
         Album album = retrieveAlbumById(albumId);
         return songRepository.retrieveSongsByAlbumId(album.getId());
     }
+
+    @Override
+    public List<Album> searchAlbumsByName(String queryString) {
+        return albumRepository.searchAlbumsByName(queryString);
+    }
 }

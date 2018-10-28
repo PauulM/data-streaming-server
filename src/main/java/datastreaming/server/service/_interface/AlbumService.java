@@ -10,4 +10,5 @@ public interface AlbumService {
     List<Album> retrieveAll();
     Album retrieveAlbumById(Long id) throws AlbumNotFoundByIdException;
     List<Song> retrieveAlbumSongs(Long albumId) throws AlbumNotFoundByIdException;
+    List<Album> searchAlbumsByName(String queryString);
 }

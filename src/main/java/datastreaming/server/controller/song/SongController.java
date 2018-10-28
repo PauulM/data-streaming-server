@@ -5,10 +5,9 @@ import datastreaming.server.model.Song;
 import datastreaming.server.service._interface.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/song")
@@ -22,4 +21,9 @@ public class SongController {
         return ResponseEntity.status(200).body(songService.retrieveSongById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Song>> searchSongsByName(
+            @RequestParam(value = "query") String query){
+        return ResponseEntity.status(200).body(songService.searchSongsByName(query));
+    }
 }

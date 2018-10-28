@@ -45,4 +45,9 @@ public class ArtistServiceImpl implements ArtistService {
         Artist artist = retrieveArtistById(artistId);
         return albumRepository.findAlbumsByArtistId(artist.getId());
     }
+
+    @Override
+    public List<Artist> searchArtistsByName(String queryString) {
+        return artistRepository.searchArtistsByName(queryString);
+    }
 }

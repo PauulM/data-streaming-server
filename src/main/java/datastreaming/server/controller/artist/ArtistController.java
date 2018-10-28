@@ -6,10 +6,7 @@ import datastreaming.server.model.Artist;
 import datastreaming.server.service._interface.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,5 +32,11 @@ public class ArtistController {
     public ResponseEntity<List<Album>> getArtistAlbums(@PathVariable Long id) throws ArtistNotFoundByIdException{
         List<Album> albums = artistService.retrieveAlbumsByArtistId(id);
         return ResponseEntity.status(200).body(albums);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Artist>> searchArtistsByName(
+            @RequestParam(value = "query") String query){
+        return ResponseEntity.status(200).body(artistService.searchArtistsByName(query));
     }
 }

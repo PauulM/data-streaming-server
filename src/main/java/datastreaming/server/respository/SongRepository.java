@@ -10,5 +10,8 @@ import java.util.List;
 public interface SongRepository extends CrudRepository<Song, Long> {
 
     @Query("select s from Song s where s.album.id = :albumId")
-    public List<Song> retrieveSongsByAlbumId(@Param("albumId") Long albumId);
+    List<Song> retrieveSongsByAlbumId(@Param("albumId") Long albumId);
+
+    @Query("select s from Song s where upper(s.name) like concat('%',upper(:queryString),'%')")
+    List<Song> searchSongsByName(@Param("queryString") String queryString);
 }
