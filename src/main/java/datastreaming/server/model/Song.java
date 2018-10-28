@@ -37,14 +37,8 @@ public class Song implements Serializable {
     @Column(name = "genres")
     private String genres;
 
-    @Column(name = "format")
-    private String format;
-
     @Column(name = "size")
     private BigDecimal size;
-
-    @Column(name = "creationdate")
-    private Date creationDate;
 
     public Long getId() {
         return id;
@@ -110,28 +104,12 @@ public class Song implements Serializable {
         this.genres = genres;
     }
 
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
     public BigDecimal getSize() {
         return size;
     }
 
     public void setSize(BigDecimal size) {
         this.size = size;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
     }
 
     @Override
@@ -145,9 +123,7 @@ public class Song implements Serializable {
                 ", length='" + length + '\'' +
                 ", quality='" + quality + '\'' +
                 ", genres='" + genres + '\'' +
-                ", format='" + format + '\'' +
                 ", size=" + size +
-                ", creationDate=" + creationDate +
                 '}';
     }
 }
