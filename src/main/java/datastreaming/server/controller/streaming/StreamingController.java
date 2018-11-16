@@ -44,7 +44,7 @@ public class StreamingController {
 
     @RequestMapping("/test/{id}")
     public void playAudio1(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer id){
-        File file = new File("C:\\Users\\pawma\\IdeaProjects\\data-streaming-server\\testdata\\music\\Metallica\\Kill 'Em All\\Seek & Destroy\\seek_"+ id +".ts");
+        File file = new File("C:\\Users\\pawma\\Desktop\\testmusic\\testdata\\music\\Metallica\\Kill 'Em All\\Seek & Destroy\\seek_\"+ id +\".ts");
         FileInputStream fis;
         byte[] buffer=null;
         try {
