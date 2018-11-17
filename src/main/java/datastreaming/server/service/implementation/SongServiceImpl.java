@@ -36,6 +36,6 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> searchSongsByName(String queryString, Integer limit, Integer offset) {
-        return songRepository.searchSongsByName(queryString, limit, offset);
+        return songRepository.searchSongsByName(queryString, searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
 }
