@@ -12,6 +12,6 @@ public interface SongRepository extends CrudRepository<Song, Long> {
     @Query("select s from Song s where s.album.id = :albumId")
     List<Song> retrieveSongsByAlbumId(@Param("albumId") Long albumId);
 
-    @Query("select s from Song s where upper(s.name) like concat('%',upper(:queryString),'%')")
-    List<Song> searchSongsByName(@Param("queryString") String queryString);
+    @Query(value = "SELECT * FROM Songs WHERE UPPER(songname) LIKE CONCAT('%',upper(?1),'%') LIMIT ?2 OFFSET ?3", nativeQuery = true)
+    List<Song> searchSongsByName(String queryString, Integer limit, Integer offset);
 }

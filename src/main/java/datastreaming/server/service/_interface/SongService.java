@@ -8,5 +8,5 @@ import java.util.List;
 public interface SongService {
     List<Song> retrieveAll();
     Song retrieveSongById(Long id) throws SongNotFoundByIdException;
-    List<Song> searchSongsByName(String queryString);
+    List<Song> searchSongsByName(String queryString, Integer limit, Integer offset);
 }

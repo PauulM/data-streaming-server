@@ -23,7 +23,9 @@ public class SongController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Song>> searchSongsByName(
-            @RequestParam(value = "query") String query){
-        return ResponseEntity.status(200).body(songService.searchSongsByName(query));
+            @RequestParam(value = "query") String query,
+            @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "offset", required = false) Integer offset){
+        return ResponseEntity.status(200).body(songService.searchSongsByName(query, limit, offset));
     }
 }

@@ -7,6 +7,7 @@ import datastreaming.server.model.Artist;
 import datastreaming.server.respository.AlbumRepository;
 import datastreaming.server.respository.ArtistRepository;
 import datastreaming.server.service._interface.ArtistService;
+import datastreaming.server.utils.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
     private AlbumRepository albumRepository;
+
+    @Autowired
+    private SearchService searchService;
 
     @Override
     public List<Artist> retrieveAll() {
@@ -47,7 +51,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public List<Artist> searchArtistsByName(String queryString) {
-        return artistRepository.searchArtistsByName(queryString);
+    public List<Artist> searchArtistsByName(String queryString, Integer limit, Integer offset) {
+        return artistRepository.searchArtistsByName(queryString, limit, offset);
     }
 }

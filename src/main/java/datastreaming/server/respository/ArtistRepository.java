@@ -12,6 +12,6 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
     @Query("select a from Artist a where a.name = :name")
     Artist retrieveArtistByName(@Param("name") String name);
 
-    @Query("select a from Artist a where upper(a.name) like concat('%',upper(:queryString),'%')")
-    List<Artist> searchArtistsByName(@Param("queryString") String queryString);
+    @Query(value = "SELECT * FROM Artists WHERE UPPER(artistname) LIKE CONCAT('%',upper(?1),'%') LIMIT ?2 OFFSET ?3", nativeQuery = true)
+    List<Artist> searchArtistsByName(String queryString, Integer limit, Integer offset);
 }

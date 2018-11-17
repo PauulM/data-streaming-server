@@ -36,7 +36,9 @@ public class ArtistController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Artist>> searchArtistsByName(
-            @RequestParam(value = "query") String query){
-        return ResponseEntity.status(200).body(artistService.searchArtistsByName(query));
+            @RequestParam(value = "query") String query,
+            @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "offset", required = false) Integer offset){
+        return ResponseEntity.status(200).body(artistService.searchArtistsByName(query, limit, offset));
     }
 }

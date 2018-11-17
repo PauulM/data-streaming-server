@@ -7,6 +7,7 @@ import datastreaming.server.model.Song;
 import datastreaming.server.respository.AlbumRepository;
 import datastreaming.server.respository.SongRepository;
 import datastreaming.server.service._interface.AlbumService;
+import datastreaming.server.utils.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class AlbumServiceImpl implements AlbumService {
     @Autowired
     private SongRepository songRepository;
 
+    @Autowired
+    private SearchService searchService;
+
     @Override
     public List<Album> retrieveAll() {
         return Lists.newArrayList(albumRepository.findAll());
@@ -30,7 +34,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public Album retrieveAlbumById(Long id) throws AlbumNotFoundByIdException {
         Optional<Album> album = albumRepository.findById(id);
-        if(!album.isPresent())
+        if (!album.isPresent())
             throw new AlbumNotFoundByIdException("Album with id " + id + " does not exist", id);
         return album.get();
     }
@@ -42,7 +46,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<Album> searchAlbumsByName(String queryString) {
-        return albumRepository.searchAlbumsByName(queryString);
+    public List<Album> searchAlbumsByName(String queryString, Integer limit, Integer offset) {
+        return albumRepository.searchAlbumsByName(queryString, searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
 }

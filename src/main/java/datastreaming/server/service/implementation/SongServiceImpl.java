@@ -5,6 +5,7 @@ import datastreaming.server.exception.SongNotFoundByIdException;
 import datastreaming.server.model.Song;
 import datastreaming.server.respository.SongRepository;
 import datastreaming.server.service._interface.SongService;
+import datastreaming.server.utils.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class SongServiceImpl implements SongService {
 
     @Autowired
     private SongRepository songRepository;
+
+    @Autowired
+    private SearchService searchService;
 
     @Override
     public List<Song> retrieveAll() {
@@ -31,7 +35,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public List<Song> searchSongsByName(String queryString) {
-        return songRepository.searchSongsByName(queryString);
+    public List<Song> searchSongsByName(String queryString, Integer limit, Integer offset) {
+        return songRepository.searchSongsByName(queryString, limit, offset);
     }
 }

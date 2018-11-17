@@ -34,7 +34,9 @@ public class AlbumController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Album>> searchAlbumsByName(
-            @RequestParam(value = "query") String query){
-        return ResponseEntity.status(200).body(albumService.searchAlbumsByName(query));
+            @RequestParam(value = "query") String query,
+            @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "offset", required = false) Integer offset){
+        return ResponseEntity.status(200).body(albumService.searchAlbumsByName(query, limit, offset));
     }
 }

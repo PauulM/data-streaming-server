@@ -19,12 +19,30 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private SongService songService;
 
+    private final Integer MAX_SEARCH_RESULTS = 50;
+
     @Override
-    public SearchDTO searchEverything(String queryString) {
+    public SearchDTO searchEverything(String queryString, Integer limit, Integer offset) {
         SearchDTO searchDTO = new SearchDTO();
-        searchDTO.setArtists(artistService.searchArtistsByName(queryString));
-        searchDTO.setAlbums(albumService.searchAlbumsByName(queryString));
-        searchDTO.setSongs(songService.searchSongsByName(queryString));
+        searchDTO.setArtists(artistService.searchArtistsByName(queryString, prepareLimit(limit), prepareOffset(offset)));
+        searchDTO.setAlbums(albumService.searchAlbumsByName(queryString, prepareLimit(limit), prepareOffset(offset)));
+        searchDTO.setSongs(songService.searchSongsByName(queryString, prepareLimit(limit), prepareOffset(offset)));
         return searchDTO;
+    }
+
+    @Override
+    public Integer prepareLimit(Integer limitParam) {
+        if(limitParam == null || limitParam < 0 || limitParam > MAX_SEARCH_RESULTS)
+            return MAX_SEARCH_RESULTS;
+        else
+            return limitParam;
+    }
+
+    @Override
+    public Integer prepareOffset(Integer offsetParam) {
+        if(offsetParam == null || offsetParam < 0)
+            return 0;
+        else
+            return offsetParam;
     }
 }
