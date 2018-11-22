@@ -39,6 +39,15 @@ public class Song implements Serializable {
     @Column(name = "size")
     private BigDecimal size;
 
+    @Column(name = "manifestfilepath")
+    private String manifestFilePath;
+
+    @Column(name = "segmentsnumber")
+    private Integer segmentsNumber;
+
+    @Column(name = "segmentfileprefix")
+    private String segmentFilePrefix;
+
     public Long getId() {
         return id;
     }
@@ -109,6 +118,30 @@ public class Song implements Serializable {
 
     public void setSize(BigDecimal size) {
         this.size = size;
+    }
+
+    public String getManifestFilePath() {
+        return manifestFilePath;
+    }
+
+    public void setManifestFilePath(String manifestFilePath) {
+        this.manifestFilePath = manifestFilePath;
+    }
+
+    public Integer getSegmentsNumber() {
+        return segmentsNumber;
+    }
+
+    public void setSegmentsNumber(Integer segmentsNumber) {
+        this.segmentsNumber = segmentsNumber;
+    }
+
+    public String getSegmentFilePrefix() {
+        return segmentFilePrefix;
+    }
+
+    public void setSegmentFilePrefix(String segmentFilePrefix) {
+        this.segmentFilePrefix = segmentFilePrefix;
     }
 
     @Override
