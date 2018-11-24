@@ -23,6 +23,7 @@ public class Artist implements Serializable {
     private String directoryPath;
 
     @Column(name = "artistartworkfilepath")
+    @JsonIgnore
     private String artworkDirectoryPath;
 
     @OneToMany(mappedBy = "artist")

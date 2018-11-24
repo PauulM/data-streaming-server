@@ -1,5 +1,7 @@
 package datastreaming.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -22,6 +24,7 @@ public class Song implements Serializable {
     private String name;
 
     @Column(name = "songfilepath")
+    @JsonIgnore
     private String filePath;
 
     @Column(name = "songno")
@@ -40,12 +43,14 @@ public class Song implements Serializable {
     private BigDecimal size;
 
     @Column(name = "manifestfilepath")
+    @JsonIgnore
     private String manifestFilePath;
 
     @Column(name = "segmentsnumber")
     private Integer segmentsNumber;
 
     @Column(name = "segmentfileprefix")
+    @JsonIgnore
     private String segmentFilePrefix;
 
     public Long getId() {

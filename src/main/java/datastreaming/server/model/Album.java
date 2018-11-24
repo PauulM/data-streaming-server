@@ -30,6 +30,7 @@ public class Album implements Serializable {
     private  String publisher;
 
     @Column(name = "albumartworkfilepath")
+    @JsonIgnore
     private String artworkFilePath;
 
     @Column(name = "albumpath")
