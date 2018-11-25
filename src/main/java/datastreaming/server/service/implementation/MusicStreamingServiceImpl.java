@@ -40,6 +40,6 @@ public class MusicStreamingServiceImpl implements MusicStreamingService {
     @Override
     public byte[] getSongSegmentFile(Long songId, Integer segmentNo) throws SongNotFoundByIdException, IOException {
         Song song = songService.retrieveSongById(songId);
-        return loadFile(song.getSegmentFilePrefix() + segmentNo + ".ts");
+        return loadFile(song.getSegmentFilePrefix() + segmentNo);
     }
 }
