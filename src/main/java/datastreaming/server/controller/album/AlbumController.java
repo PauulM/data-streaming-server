@@ -18,8 +18,9 @@ public class AlbumController {
     private AlbumService albumService;
 
     @GetMapping
-    public ResponseEntity<List<Album>> getAllAlbums(){
-        return ResponseEntity.status(200).body(albumService.retrieveAll());
+    public ResponseEntity<List<Album>> getAllAlbums(@RequestParam(value = "limit", required = false) Integer limit,
+                                                    @RequestParam(value = "offset", required = false) Integer offset){
+        return ResponseEntity.status(200).body(albumService.retrieveAll(limit, offset));
     }
 
     @GetMapping("/{id}")

@@ -14,4 +14,8 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     @Query(value = "SELECT * FROM Albums WHERE UPPER(albumname) LIKE CONCAT('%',upper(?1),'%') LIMIT ?2 OFFSET ?3", nativeQuery = true)
     List<Album> searchAlbumsByName(String queryString, Integer limit, Integer offset);
+
+    @Query(value = "SELECT * FROM Albums LIMIT ?1 OFFSET ?2", nativeQuery = true)
+    List<Album> findAll(Integer limit, Integer offset);
+
 }

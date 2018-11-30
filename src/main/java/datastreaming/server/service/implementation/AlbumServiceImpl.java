@@ -1,6 +1,5 @@
 package datastreaming.server.service.implementation;
 
-import com.google.common.collect.Lists;
 import datastreaming.server.exception.AlbumNotFoundByIdException;
 import datastreaming.server.model.Album;
 import datastreaming.server.model.Song;
@@ -27,8 +26,8 @@ public class AlbumServiceImpl implements AlbumService {
     private SearchService searchService;
 
     @Override
-    public List<Album> retrieveAll() {
-        return Lists.newArrayList(albumRepository.findAll());
+    public List<Album> retrieveAll(Integer limit, Integer offset) {
+        return albumRepository.findAll(searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
 
     @Override
