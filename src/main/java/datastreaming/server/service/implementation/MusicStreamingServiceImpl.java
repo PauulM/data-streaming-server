@@ -5,6 +5,7 @@ import datastreaming.server.model.Song;
 import datastreaming.server.respository.SongRepository;
 import datastreaming.server.service._interface.MusicStreamingService;
 import datastreaming.server.service._interface.SongService;
+import datastreaming.server.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,21 +26,12 @@ public class MusicStreamingServiceImpl implements MusicStreamingService {
     @Override
     public byte[] getSongManifestFile(Long songId) throws SongNotFoundByIdException, IOException {
         Song song = songService.retrieveSongById(songId);
-        return loadFile(song.getManifestFilePath());
-    }
-
-    private byte[] loadFile(String filePath) throws IOException {
-        File file = new File(filePath);
-        FileInputStream fis = new FileInputStream(file);
-        byte[] buffer = new byte[fis.available()];
-        fis.read(buffer);
-        fis.close();
-        return buffer;
+        return FileUtil.loadFile(song.getManifestFilePath());
     }
 
     @Override
     public byte[] getSongSegmentFile(Long songId, Integer segmentNo) throws SongNotFoundByIdException, IOException {
         Song song = songService.retrieveSongById(songId);
-        return loadFile(song.getSegmentFilePrefix() + segmentNo);
+        return FileUtil.loadFile(song.getSegmentFilePrefix() + segmentNo);
     }
 }

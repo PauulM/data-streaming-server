@@ -5,9 +5,12 @@ import datastreaming.server.model.Album;
 import datastreaming.server.model.Song;
 import datastreaming.server.service._interface.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,7 +22,7 @@ public class AlbumController {
 
     @GetMapping
     public ResponseEntity<List<Album>> getAlbums(@RequestParam(value = "limit", required = false) Integer limit,
-                                                    @RequestParam(value = "offset", required = false) Integer offset) {
+                                                 @RequestParam(value = "offset", required = false) Integer offset) {
         return ResponseEntity.status(200).body(albumService.retrieveAll(limit, offset));
     }
 
@@ -42,5 +45,10 @@ public class AlbumController {
             @RequestParam(value = "limit", required = false) Integer limit,
             @RequestParam(value = "offset", required = false) Integer offset) {
         return ResponseEntity.status(200).body(albumService.searchAlbumsByName(query, limit, offset));
+    }
+
+    @GetMapping(value = "/{id}/artwork", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getAlbumArtwork(@PathVariable Long id) throws AlbumNotFoundByIdException, IOException {
+        return ResponseEntity.status(200).body(albumService.getAlbumArtwork(id));
     }
 }

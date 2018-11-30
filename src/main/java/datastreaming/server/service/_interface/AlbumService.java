@@ -4,6 +4,7 @@ import datastreaming.server.exception.AlbumNotFoundByIdException;
 import datastreaming.server.model.Album;
 import datastreaming.server.model.Song;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface AlbumService {
@@ -11,4 +12,5 @@ public interface AlbumService {
     Album retrieveAlbumById(Long id) throws AlbumNotFoundByIdException;
     List<Song> retrieveAlbumSongs(Long albumId, Integer limit, Integer offset) throws AlbumNotFoundByIdException;
     List<Album> searchAlbumsByName(String queryString, Integer limit, Integer offset);
+    byte[] getAlbumArtwork(Long id) throws AlbumNotFoundByIdException, IOException;
 }

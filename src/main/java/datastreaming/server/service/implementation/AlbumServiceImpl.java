@@ -6,10 +6,12 @@ import datastreaming.server.model.Song;
 import datastreaming.server.respository.AlbumRepository;
 import datastreaming.server.respository.SongRepository;
 import datastreaming.server.service._interface.AlbumService;
+import datastreaming.server.utils.FileUtil;
 import datastreaming.server.utils.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,5 +54,13 @@ public class AlbumServiceImpl implements AlbumService {
     public List<Album> searchAlbumsByName(String queryString, Integer limit, Integer offset) {
         return albumRepository.searchAlbumsByName(
                 queryString, searchService.prepareLimit(limit), searchService.prepareOffset(offset));
+    }
+
+    @Override
+    public byte[] getAlbumArtwork(Long id) throws AlbumNotFoundByIdException, IOException {
+        Album album = retrieveAlbumById(id);
+        if(album.getArtworkFilePath() == null)
+            return new byte[0];
+        return FileUtil.loadFile(album.getArtworkFilePath());
     }
 }
