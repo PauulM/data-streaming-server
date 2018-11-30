@@ -1,6 +1,5 @@
 package datastreaming.server.service.implementation;
 
-import com.google.common.collect.Lists;
 import datastreaming.server.exception.ArtistNotFoundByIdException;
 import datastreaming.server.model.Album;
 import datastreaming.server.model.Artist;
@@ -27,8 +26,8 @@ public class ArtistServiceImpl implements ArtistService {
     private SearchService searchService;
 
     @Override
-    public List<Artist> retrieveAll() {
-        return Lists.newArrayList(artistRepository.findAll());
+    public List<Artist> retrieveAll(Integer limit, Integer offset) {
+        return artistRepository.findAll(searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
 
     @Override
@@ -45,9 +44,9 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public List<Album> retrieveAlbumsByArtistId(Long artistId) throws ArtistNotFoundByIdException {
+    public List<Album> retrieveAlbumsByArtistId(Long artistId, Integer limit, Integer offset) throws ArtistNotFoundByIdException {
         Artist artist = retrieveArtistById(artistId);
-        return albumRepository.findAlbumsByArtistId(artist.getId());
+        return albumRepository.findAlbumsByArtistId(artist.getId(), searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
 
     @Override

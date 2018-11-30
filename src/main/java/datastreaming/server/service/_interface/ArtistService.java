@@ -7,9 +7,9 @@ import datastreaming.server.model.Artist;
 import java.util.List;
 
 public interface ArtistService {
-    List<Artist> retrieveAll();
+    List<Artist> retrieveAll(Integer limit, Integer offset);
     Artist retrieveArtistByName(String name);
     Artist retrieveArtistById(Long id) throws ArtistNotFoundByIdException;
-    List<Album> retrieveAlbumsByArtistId(Long artistId) throws ArtistNotFoundByIdException;
+    List<Album> retrieveAlbumsByArtistId(Long artistId, Integer limit, Integer offset) throws ArtistNotFoundByIdException;
     List<Artist> searchArtistsByName(String queryString, Integer limit, Integer offset);
 }

@@ -18,8 +18,9 @@ public class ArtistController {
     private ArtistService artistService;
 
     @GetMapping
-    public ResponseEntity<List<Artist>> getAllArtists(){
-        List<Artist> artists = artistService.retrieveAll();
+    public ResponseEntity<List<Artist>> getAllArtists(@RequestParam(value = "limit", required = false) Integer limit,
+                                                      @RequestParam(value = "offset", required = false) Integer offset) {
+        List<Artist> artists = artistService.retrieveAll(limit, offset);
         return ResponseEntity.status(200).body(artists);
     }
 
@@ -29,8 +30,11 @@ public class ArtistController {
     }
 
     @GetMapping("/{id}/albums")
-    public ResponseEntity<List<Album>> getArtistAlbums(@PathVariable Long id) throws ArtistNotFoundByIdException{
-        List<Album> albums = artistService.retrieveAlbumsByArtistId(id);
+    public ResponseEntity<List<Album>> getArtistAlbums(
+            @PathVariable Long id,
+            @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "offset", required = false) Integer offset) throws ArtistNotFoundByIdException {
+        List<Album> albums = artistService.retrieveAlbumsByArtistId(id, limit, offset);
         return ResponseEntity.status(200).body(albums);
     }
 
@@ -38,7 +42,7 @@ public class ArtistController {
     public ResponseEntity<List<Artist>> searchArtistsByName(
             @RequestParam(value = "query") String query,
             @RequestParam(value = "limit", required = false) Integer limit,
-            @RequestParam(value = "offset", required = false) Integer offset){
+            @RequestParam(value = "offset", required = false) Integer offset) {
         return ResponseEntity.status(200).body(artistService.searchArtistsByName(query, limit, offset));
     }
 }

@@ -14,4 +14,7 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
 
     @Query(value = "SELECT * FROM Artists WHERE UPPER(artistname) LIKE CONCAT('%',upper(?1),'%') LIMIT ?2 OFFSET ?3", nativeQuery = true)
     List<Artist> searchArtistsByName(String queryString, Integer limit, Integer offset);
+
+    @Query(value = "SELECT * FROM Artists LIMIT ?1 OFFSET ?2", nativeQuery = true)
+    List<Artist> findAll(Integer limit, Integer offset);
 }

@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface AlbumRepository extends CrudRepository<Album, Long> {
 
-    @Query("select a from Album a where a.artist.id = :artistId")
-    List<Album> findAlbumsByArtistId(@Param("artistId") Long artistId);
+    @Query(value = "SELECT * FROM Albums WHERE artistid = ?1 LIMIT ?2 OFFSET ?3", nativeQuery = true)
+    List<Album> findAlbumsByArtistId(Long artistId, Integer limit, Integer offset);
 
     @Query(value = "SELECT * FROM Albums WHERE UPPER(albumname) LIKE CONCAT('%',upper(?1),'%') LIMIT ?2 OFFSET ?3", nativeQuery = true)
     List<Album> searchAlbumsByName(String queryString, Integer limit, Integer offset);
