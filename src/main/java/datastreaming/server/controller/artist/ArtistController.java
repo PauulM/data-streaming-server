@@ -3,6 +3,7 @@ package datastreaming.server.controller.artist;
 import datastreaming.server.exception.ArtistNotFoundByIdException;
 import datastreaming.server.model.Album;
 import datastreaming.server.model.Artist;
+import datastreaming.server.model.Song;
 import datastreaming.server.service._interface.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,15 @@ public class ArtistController {
             @RequestParam(value = "offset", required = false) Integer offset) throws ArtistNotFoundByIdException {
         List<Album> albums = artistService.retrieveAlbumsByArtistId(id, limit, offset);
         return ResponseEntity.status(200).body(albums);
+    }
+
+    @GetMapping("{id}/songs")
+    public ResponseEntity<List<Song>> getArtistSongs(
+            @PathVariable Long id,
+            @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "offset", required = false) Integer offset) throws ArtistNotFoundByIdException {
+        List<Song> songs = artistService.retrieveSongsByArtistId(id, limit, offset);
+        return ResponseEntity.status(200).body(songs);
     }
 
     @GetMapping("/search")

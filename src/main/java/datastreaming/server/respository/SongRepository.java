@@ -10,7 +10,10 @@ import java.util.List;
 public interface SongRepository extends CrudRepository<Song, Long> {
 
     @Query(value = "SELECT * FROM Songs WHERE albumid = ?1 LIMIT ?2 OFFSET ?3", nativeQuery = true)
-    List<Song> retrieveSongsByAlbumId(Long albumId, Integer limit, Integer offset);
+    List<Song> retrieveSongsByAlbumIdWithLimit(Long albumId, Integer limit, Integer offset);
+
+    @Query(value = "SELECT * FROM Songs WHERE albumid = ?1", nativeQuery = true)
+    List<Song> retrieveSongsByAlbumId(Long albumId);
 
     @Query(value = "SELECT * FROM Songs WHERE UPPER(songname) LIKE CONCAT('%',upper(?1),'%') LIMIT ?2 OFFSET ?3", nativeQuery = true)
     List<Song> searchSongsByName(String queryString, Integer limit, Integer offset);
