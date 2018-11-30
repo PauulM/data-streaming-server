@@ -34,6 +34,7 @@ public class Album implements Serializable {
     private String artworkFilePath;
 
     @Column(name = "albumpath")
+    @JsonIgnore
     private String albumPath;
 
     @OneToMany(mappedBy = "album")

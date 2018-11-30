@@ -20,6 +20,7 @@ public class Artist implements Serializable {
     private String name;
 
     @Column(name = "artistpath")
+    @JsonIgnore
     private String directoryPath;
 
     @Column(name = "artistartworkfilepath")
