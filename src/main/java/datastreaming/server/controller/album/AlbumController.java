@@ -18,8 +18,8 @@ public class AlbumController {
     private AlbumService albumService;
 
     @GetMapping
-    public ResponseEntity<List<Album>> getAllAlbums(@RequestParam(value = "limit", required = false) Integer limit,
-                                                    @RequestParam(value = "offset", required = false) Integer offset){
+    public ResponseEntity<List<Album>> getAlbums(@RequestParam(value = "limit", required = false) Integer limit,
+                                                    @RequestParam(value = "offset", required = false) Integer offset) {
         return ResponseEntity.status(200).body(albumService.retrieveAll(limit, offset));
     }
 
@@ -29,15 +29,18 @@ public class AlbumController {
     }
 
     @GetMapping("/{id}/songs")
-    public ResponseEntity<List<Song>> getAlbumSongs(@PathVariable Long id) throws AlbumNotFoundByIdException{
-        return ResponseEntity.status(200).body(albumService.retrieveAlbumSongs(id));
+    public ResponseEntity<List<Song>> getAlbumSongs(
+            @PathVariable Long id,
+            @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "offset", required = false) Integer offset) throws AlbumNotFoundByIdException {
+        return ResponseEntity.status(200).body(albumService.retrieveAlbumSongs(id, limit, offset));
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<Album>> searchAlbumsByName(
             @RequestParam(value = "query") String query,
             @RequestParam(value = "limit", required = false) Integer limit,
-            @RequestParam(value = "offset", required = false) Integer offset){
+            @RequestParam(value = "offset", required = false) Integer offset) {
         return ResponseEntity.status(200).body(albumService.searchAlbumsByName(query, limit, offset));
     }
 }

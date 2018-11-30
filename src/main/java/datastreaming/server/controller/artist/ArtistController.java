@@ -18,7 +18,7 @@ public class ArtistController {
     private ArtistService artistService;
 
     @GetMapping
-    public ResponseEntity<List<Artist>> getAllArtists(@RequestParam(value = "limit", required = false) Integer limit,
+    public ResponseEntity<List<Artist>> getArtists(@RequestParam(value = "limit", required = false) Integer limit,
                                                       @RequestParam(value = "offset", required = false) Integer offset) {
         List<Artist> artists = artistService.retrieveAll(limit, offset);
         return ResponseEntity.status(200).body(artists);

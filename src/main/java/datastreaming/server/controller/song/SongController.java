@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -15,6 +16,12 @@ public class SongController {
 
     @Autowired
     private SongService songService;
+
+    @GetMapping
+    public ResponseEntity<List<Song>> getSongs(@RequestParam(value = "limit", required = false) Integer limit,
+                                                  @RequestParam(value = "offset", required = false) Integer offset) {
+        return ResponseEntity.status(200).body(songService.retrieveAll(limit, offset));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Song> getSongById(@PathVariable Long id) throws SongNotFoundByIdException {
@@ -25,7 +32,7 @@ public class SongController {
     public ResponseEntity<List<Song>> searchSongsByName(
             @RequestParam(value = "query") String query,
             @RequestParam(value = "limit", required = false) Integer limit,
-            @RequestParam(value = "offset", required = false) Integer offset){
+            @RequestParam(value = "offset", required = false) Integer offset) {
         return ResponseEntity.status(200).body(songService.searchSongsByName(query, limit, offset));
     }
 }

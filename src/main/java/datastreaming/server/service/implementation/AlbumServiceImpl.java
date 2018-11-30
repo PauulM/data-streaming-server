@@ -39,13 +39,15 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<Song> retrieveAlbumSongs(Long albumId) throws AlbumNotFoundByIdException {
+    public List<Song> retrieveAlbumSongs(Long albumId, Integer limit, Integer offset) throws AlbumNotFoundByIdException {
         Album album = retrieveAlbumById(albumId);
-        return songRepository.retrieveSongsByAlbumId(album.getId());
+        return songRepository.retrieveSongsByAlbumId(
+                album.getId(), searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
 
     @Override
     public List<Album> searchAlbumsByName(String queryString, Integer limit, Integer offset) {
-        return albumRepository.searchAlbumsByName(queryString, searchService.prepareLimit(limit), searchService.prepareOffset(offset));
+        return albumRepository.searchAlbumsByName(
+                queryString, searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
 }
