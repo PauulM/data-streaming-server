@@ -1,6 +1,8 @@
 package datastreaming.server.controller.search;
 
 import datastreaming.server.dto.SearchDTO;
+import datastreaming.server.exception.AlbumNotFoundByIdException;
+import datastreaming.server.exception.ArtistNotFoundByIdException;
 import datastreaming.server.utils.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,8 @@ public class SearchController {
     @GetMapping
     public ResponseEntity<SearchDTO> searchEverything(@RequestParam(value = "query") String queryString,
                                                       @RequestParam(value = "limit", required = false) Integer limit,
-                                                      @RequestParam(value = "offset", required = false) Integer offset){
+                                                      @RequestParam(value = "offset", required = false) Integer offset)
+    throws ArtistNotFoundByIdException, AlbumNotFoundByIdException {
         return ResponseEntity.status(200).body(searchService.searchEverything(queryString, limit, offset));
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "artists")
@@ -88,5 +89,21 @@ public class Artist implements Serializable {
                 ", directoryPath='" + directoryPath + '\'' +
                 ", artworkDirectoryPath='" + artworkDirectoryPath + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Artist artist = (Artist) o;
+        return Objects.equals(id, artist.id) &&
+                Objects.equals(name, artist.name) &&
+                Objects.equals(directoryPath, artist.directoryPath);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, directoryPath);
     }
 }

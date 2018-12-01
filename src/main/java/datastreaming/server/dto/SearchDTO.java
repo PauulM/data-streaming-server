@@ -5,6 +5,7 @@ import datastreaming.server.model.Artist;
 import datastreaming.server.model.Song;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchDTO implements Serializable {
@@ -14,6 +15,18 @@ public class SearchDTO implements Serializable {
     private List<Artist> artists;
     private List<Album> albums;
     private List<Song> songs;
+
+    public SearchDTO() {
+        artists = new ArrayList<>();
+        albums = new ArrayList<>();
+        songs = new ArrayList<>();
+    }
+
+    public SearchDTO(List<Artist> artists, List<Album> albums, List<Song> songs) {
+        this.artists = artists;
+        this.albums = albums;
+        this.songs = songs;
+    }
 
     public List<Artist> getArtists() {
         return artists;

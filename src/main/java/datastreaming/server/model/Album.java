@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "albums")
@@ -117,5 +118,23 @@ public class Album implements Serializable {
                 ", albumPath='" + albumPath + '\'' +
                 ", songs=" + songs +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Album album = (Album) o;
+        return Objects.equals(id, album.id) &&
+                Objects.equals(artist, album.artist) &&
+                Objects.equals(name, album.name) &&
+                Objects.equals(albumYear, album.albumYear) &&
+                Objects.equals(publisher, album.publisher);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, artist, name, albumYear, publisher);
     }
 }

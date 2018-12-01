@@ -9,4 +9,5 @@ public interface SongService {
     List<Song> retrieveAll(Integer limit, Integer offset);
     Song retrieveSongById(Long id) throws SongNotFoundByIdException;
     List<Song> searchSongsByName(String queryString, Integer limit, Integer offset);
+    List<Song> searchSongsByNameAccurate(String queryString);
 }

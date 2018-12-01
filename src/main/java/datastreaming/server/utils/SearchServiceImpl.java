@@ -1,11 +1,19 @@
 package datastreaming.server.utils;
 
 import datastreaming.server.dto.SearchDTO;
+import datastreaming.server.exception.AlbumNotFoundByIdException;
+import datastreaming.server.exception.ArtistNotFoundByIdException;
+import datastreaming.server.model.Album;
+import datastreaming.server.model.Artist;
+import datastreaming.server.model.Song;
 import datastreaming.server.service._interface.AlbumService;
 import datastreaming.server.service._interface.ArtistService;
 import datastreaming.server.service._interface.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -22,17 +30,78 @@ public class SearchServiceImpl implements SearchService {
     private final Integer MAX_SEARCH_RESULTS = 50;
 
     @Override
-    public SearchDTO searchEverything(String queryString, Integer limit, Integer offset) {
-        SearchDTO searchDTO = new SearchDTO();
-        searchDTO.setArtists(artistService.searchArtistsByName(queryString, prepareLimit(limit), prepareOffset(offset)));
-        searchDTO.setAlbums(albumService.searchAlbumsByName(queryString, prepareLimit(limit), prepareOffset(offset)));
-        searchDTO.setSongs(songService.searchSongsByName(queryString, prepareLimit(limit), prepareOffset(offset)));
+    public SearchDTO searchEverything(String queryString, Integer limit, Integer offset) throws ArtistNotFoundByIdException, AlbumNotFoundByIdException {
+        List<Artist> artists = artistService.searchArtistsByNameAccurate(queryString);
+        List<Album> albums = albumService.searchAlbumsByNameAccurate(queryString);
+        List<Song> songs = songService.searchSongsByNameAccurate(queryString);
+
+        addResultsConnectedToAccurateSearch(artists, albums, songs);
+
+        List<Artist> artistsMatchingPattern = artistService.searchArtistsByName(queryString, null, null);
+        List<Album> albumsMatchingPattern = albumService.searchAlbumsByName(queryString, null, null);
+        List<Song> songsMatchingPattern = songService.searchSongsByName(queryString, null, null);
+
+        addMatchingPatternResults(artistsMatchingPattern, albumsMatchingPattern, songsMatchingPattern);
+
+        artists.addAll(artistsMatchingPattern);
+        albums.addAll(albumsMatchingPattern);
+        songs.addAll(songsMatchingPattern);
+
+        SearchDTO searchDTO = new SearchDTO(
+                artists.stream().distinct().collect(Collectors.toList()),
+                albums.stream().distinct().collect(Collectors.toList()),
+                songs.stream().distinct().collect(Collectors.toList())
+        );
         return searchDTO;
+    }
+
+    private void addResultsConnectedToAccurateSearch(List<Artist> artists, List<Album> albums, List<Song> songs) throws ArtistNotFoundByIdException, AlbumNotFoundByIdException {
+        addResultsConnectedToAccurateArtists(artists, albums, songs);
+        addResultsConnectedToAccurateAlbums(artists, albums, songs);
+        addResultsConnectedToAccurateSongs(artists, albums, songs);
+    }
+
+    private void addResultsConnectedToAccurateSongs(List<Artist> artists, List<Album> albums, List<Song> songs) {
+        for (Song song : songs) {
+            artists.add(song.getAlbum().getArtist());
+            albums.add(song.getAlbum());
+        }
+    }
+
+    private void addResultsConnectedToAccurateAlbums(List<Artist> artists, List<Album> albums, List<Song> songs) throws AlbumNotFoundByIdException {
+        for (Album album : albums) {
+            artists.add(album.getArtist());
+            songs.addAll(albumService.retrieveAlbumSongs(album.getId(), null, null));
+        }
+    }
+
+    private void addResultsConnectedToAccurateArtists(List<Artist> artists, List<Album> albums, List<Song> songs) throws ArtistNotFoundByIdException {
+        for (Artist artist : artists) {
+            albums.addAll(artistService.retrieveAlbumsByArtistId(artist.getId(), null, null));
+            songs.addAll(artistService.retrieveSongsByArtistId(artist.getId(), null, null));
+        }
+    }
+
+    private void addMatchingPatternResults(List<Artist> artistsMatchingPattern, List<Album> albumsMatchingPattern, List<Song> songsMatchingPattern) throws ArtistNotFoundByIdException, AlbumNotFoundByIdException {
+        for (Artist artist : artistsMatchingPattern) {
+            albumsMatchingPattern.addAll(artistService.retrieveAlbumsByArtistId(artist.getId(), null, null));
+            songsMatchingPattern.addAll(artistService.retrieveSongsByArtistId(artist.getId(), null, null));
+        }
+
+        for (Album album : albumsMatchingPattern) {
+            artistsMatchingPattern.add(album.getArtist());
+            songsMatchingPattern.addAll(albumService.retrieveAlbumSongs(album.getId(), null, null));
+        }
+
+        for (Song song : songsMatchingPattern) {
+            artistsMatchingPattern.add(song.getAlbum().getArtist());
+            albumsMatchingPattern.add(song.getAlbum());
+        }
     }
 
     @Override
     public Integer prepareLimit(Integer limitParam) {
-        if(limitParam == null || limitParam < 0 || limitParam > MAX_SEARCH_RESULTS)
+        if (limitParam == null || limitParam < 0 || limitParam > MAX_SEARCH_RESULTS)
             return MAX_SEARCH_RESULTS;
         else
             return limitParam;
@@ -40,7 +109,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public Integer prepareOffset(Integer offsetParam) {
-        if(offsetParam == null || offsetParam < 0)
+        if (offsetParam == null || offsetParam < 0)
             return 0;
         else
             return offsetParam;

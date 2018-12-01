@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "songs")
@@ -162,5 +163,27 @@ public class Song implements Serializable {
                 ", genres='" + genres + '\'' +
                 ", size=" + size +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Song song = (Song) o;
+        return Objects.equals(id, song.id) &&
+                Objects.equals(album, song.album) &&
+                Objects.equals(name, song.name) &&
+                Objects.equals(filePath, song.filePath) &&
+                Objects.equals(songNo, song.songNo) &&
+                Objects.equals(length, song.length) &&
+                Objects.equals(quality, song.quality) &&
+                Objects.equals(genres, song.genres) &&
+                Objects.equals(size, song.size);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, album, name, filePath, songNo, length, quality, genres, size);
     }
 }

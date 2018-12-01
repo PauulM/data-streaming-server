@@ -57,6 +57,11 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
+    public List<Album> searchAlbumsByNameAccurate(String queryString) {
+        return albumRepository.searchAlbumsByNameAccurate(queryString);
+    }
+
+    @Override
     public byte[] getAlbumArtwork(Long id) throws AlbumNotFoundByIdException, IOException {
         Album album = retrieveAlbumById(id);
         if(album.getArtworkFilePath() == null)

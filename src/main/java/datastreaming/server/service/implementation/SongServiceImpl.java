@@ -37,4 +37,9 @@ public class SongServiceImpl implements SongService {
     public List<Song> searchSongsByName(String queryString, Integer limit, Integer offset) {
         return songRepository.searchSongsByName(queryString, searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
+
+    @Override
+    public List<Song> searchSongsByNameAccurate(String queryString) {
+        return songRepository.searchSongsByNameAccurate(queryString);
+    }
 }

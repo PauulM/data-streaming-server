@@ -76,4 +76,9 @@ public class ArtistServiceImpl implements ArtistService {
     public List<Artist> searchArtistsByName(String queryString, Integer limit, Integer offset) {
         return artistRepository.searchArtistsByName(queryString, searchService.prepareLimit(limit), searchService.prepareOffset(offset));
     }
+
+    @Override
+    public List<Artist> searchArtistsByNameAccurate(String queryString) {
+        return artistRepository.searchArtistsByNameAccurate(queryString);
+    }
 }

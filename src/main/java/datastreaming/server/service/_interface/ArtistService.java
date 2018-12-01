@@ -13,5 +13,6 @@ public interface ArtistService {
     Artist retrieveArtistById(Long id) throws ArtistNotFoundByIdException;
     List<Album> retrieveAlbumsByArtistId(Long artistId, Integer limit, Integer offset) throws ArtistNotFoundByIdException;
     List<Artist> searchArtistsByName(String queryString, Integer limit, Integer offset);
+    List<Artist> searchArtistsByNameAccurate(String queryString);
     List<Song> retrieveSongsByArtistId(Long artistId, Integer limit, Integer offset) throws ArtistNotFoundByIdException;
 }

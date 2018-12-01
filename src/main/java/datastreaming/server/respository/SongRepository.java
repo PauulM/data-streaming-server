@@ -18,6 +18,9 @@ public interface SongRepository extends CrudRepository<Song, Long> {
     @Query(value = "SELECT * FROM Songs WHERE UPPER(songname) LIKE CONCAT('%',upper(?1),'%') LIMIT ?2 OFFSET ?3", nativeQuery = true)
     List<Song> searchSongsByName(String queryString, Integer limit, Integer offset);
 
+    @Query(value = "SELECT * FROM Songs WHERE UPPER(songname) = UPPER(?1)", nativeQuery = true)
+    List<Song> searchSongsByNameAccurate(String queryString);
+
     @Query(value = "SELECT * FROM Songs LIMIT ?1 OFFSET ?2", nativeQuery = true)
     List<Song> findAll(Integer limit, Integer offset);
 }
