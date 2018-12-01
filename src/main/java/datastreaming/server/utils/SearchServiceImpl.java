@@ -12,6 +12,7 @@ import datastreaming.server.service._interface.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchDTO searchEverything(String queryString, Integer limit, Integer offset) throws ArtistNotFoundByIdException, AlbumNotFoundByIdException {
+        Integer correctLimit = prepareLimit(limit);
+        Integer correctOffset = prepareOffset(offset);
+
         List<Artist> artists = artistService.searchArtistsByNameAccurate(queryString);
         List<Album> albums = albumService.searchAlbumsByNameAccurate(queryString);
         List<Song> songs = songService.searchSongsByNameAccurate(queryString);
@@ -48,9 +52,9 @@ public class SearchServiceImpl implements SearchService {
         songs.addAll(songsMatchingPattern);
 
         SearchDTO searchDTO = new SearchDTO(
-                artists.stream().distinct().collect(Collectors.toList()),
-                albums.stream().distinct().collect(Collectors.toList()),
-                songs.stream().distinct().collect(Collectors.toList())
+                reduceArtistsWithLimitAndOffset(artists, correctLimit, correctOffset),
+                reduceAlbumsWithLimitAndOffset(albums, correctLimit, correctOffset),
+                reduceSongsWithLimitAndOffset(songs, correctLimit, correctOffset)
         );
         return searchDTO;
     }
@@ -97,6 +101,27 @@ public class SearchServiceImpl implements SearchService {
             artistsMatchingPattern.add(song.getAlbum().getArtist());
             albumsMatchingPattern.add(song.getAlbum());
         }
+    }
+
+    private List<Artist> reduceArtistsWithLimitAndOffset(List<Artist> artists, Integer correctLimit, Integer correctOffset) {
+        List<Artist> result = artists.stream().distinct().collect(Collectors.toList());
+        if (result.size() < correctLimit + correctOffset)
+            return result;
+        return new ArrayList<>(result.subList(correctOffset, correctLimit + correctOffset));
+    }
+
+    private List<Album> reduceAlbumsWithLimitAndOffset(List<Album> albums, Integer correctLimit, Integer correctOffset) {
+        List<Album> result = albums.stream().distinct().collect(Collectors.toList());
+        if (result.size() < correctLimit + correctOffset)
+            return result;
+        return new ArrayList<>(result.subList(correctOffset, correctLimit + correctOffset));
+    }
+
+    private List<Song> reduceSongsWithLimitAndOffset(List<Song> artists, Integer correctLimit, Integer correctOffset) {
+        List<Song> result = artists.stream().distinct().collect(Collectors.toList());
+        if (result.size() < correctLimit + correctOffset)
+            return result;
+        return new ArrayList<>(result.subList(correctOffset, correctLimit + correctOffset));
     }
 
     @Override
