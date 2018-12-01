@@ -67,6 +67,8 @@ public class ArtistServiceImpl implements ArtistService {
             if(artistSongs.size() >= correctLimit + correctOffset)
                 break;
         }
+        if(artistSongs.size() <= correctOffset)
+            return new ArrayList<>();
         if (artistSongs.size() < correctLimit + correctOffset)
             return artistSongs;
         return new ArrayList<>(artistSongs.subList(correctOffset, correctLimit + correctOffset));

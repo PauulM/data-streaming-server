@@ -1,6 +1,7 @@
 package datastreaming.server.utils;
 
 import datastreaming.server.dto.SearchDTO;
+import datastreaming.server.dto.SearchLimitOffsetDTO;
 import datastreaming.server.exception.AlbumNotFoundByIdException;
 import datastreaming.server.exception.ArtistNotFoundByIdException;
 import datastreaming.server.model.Album;
@@ -31,10 +32,7 @@ public class SearchServiceImpl implements SearchService {
     private final Integer MAX_SEARCH_RESULTS = 50;
 
     @Override
-    public SearchDTO searchEverything(String queryString, Integer limit, Integer offset) throws ArtistNotFoundByIdException, AlbumNotFoundByIdException {
-        Integer correctLimit = prepareLimit(limit);
-        Integer correctOffset = prepareOffset(offset);
-
+    public SearchDTO searchEverything(String queryString, SearchLimitOffsetDTO searchLimitOffsetDTO) throws ArtistNotFoundByIdException, AlbumNotFoundByIdException {
         List<Artist> artists = artistService.searchArtistsByNameAccurate(queryString);
         List<Album> albums = albumService.searchAlbumsByNameAccurate(queryString);
         List<Song> songs = songService.searchSongsByNameAccurate(queryString);
@@ -52,9 +50,12 @@ public class SearchServiceImpl implements SearchService {
         songs.addAll(songsMatchingPattern);
 
         SearchDTO searchDTO = new SearchDTO(
-                reduceArtistsWithLimitAndOffset(artists, correctLimit, correctOffset),
-                reduceAlbumsWithLimitAndOffset(albums, correctLimit, correctOffset),
-                reduceSongsWithLimitAndOffset(songs, correctLimit, correctOffset)
+                reduceArtistsWithLimitAndOffset(artists,
+                        prepareLimit(searchLimitOffsetDTO.getArtistLimit()), prepareOffset(searchLimitOffsetDTO.getArtistOffset())),
+                reduceAlbumsWithLimitAndOffset(albums,
+                        prepareLimit(searchLimitOffsetDTO.getAlbumLimit()), prepareOffset(searchLimitOffsetDTO.getAlbumOffset())),
+                reduceSongsWithLimitAndOffset(songs,
+                        prepareLimit(searchLimitOffsetDTO.getSongLimit()), prepareOffset(searchLimitOffsetDTO.getSongOffset()))
         );
         return searchDTO;
     }
@@ -105,6 +106,8 @@ public class SearchServiceImpl implements SearchService {
 
     private List<Artist> reduceArtistsWithLimitAndOffset(List<Artist> artists, Integer correctLimit, Integer correctOffset) {
         List<Artist> result = artists.stream().distinct().collect(Collectors.toList());
+        if(result.size() <= correctOffset)
+            return new ArrayList<>();
         if (result.size() < correctLimit + correctOffset)
             return result;
         return new ArrayList<>(result.subList(correctOffset, correctLimit + correctOffset));
@@ -112,6 +115,8 @@ public class SearchServiceImpl implements SearchService {
 
     private List<Album> reduceAlbumsWithLimitAndOffset(List<Album> albums, Integer correctLimit, Integer correctOffset) {
         List<Album> result = albums.stream().distinct().collect(Collectors.toList());
+        if(result.size() <= correctOffset)
+            return new ArrayList<>();
         if (result.size() < correctLimit + correctOffset)
             return result;
         return new ArrayList<>(result.subList(correctOffset, correctLimit + correctOffset));
@@ -119,6 +124,8 @@ public class SearchServiceImpl implements SearchService {
 
     private List<Song> reduceSongsWithLimitAndOffset(List<Song> artists, Integer correctLimit, Integer correctOffset) {
         List<Song> result = artists.stream().distinct().collect(Collectors.toList());
+        if(result.size() <= correctOffset)
+            return new ArrayList<>();
         if (result.size() < correctLimit + correctOffset)
             return result;
         return new ArrayList<>(result.subList(correctOffset, correctLimit + correctOffset));
