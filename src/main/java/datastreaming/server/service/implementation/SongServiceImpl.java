@@ -6,6 +6,7 @@ import datastreaming.server.respository.SongRepository;
 import datastreaming.server.service._interface.SongService;
 import datastreaming.server.utils.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    @Cacheable("songs")
     public Song retrieveSongById(Long id) throws SongNotFoundByIdException {
         Optional<Song> song = songRepository.findById(id);
         if(!song.isPresent())
