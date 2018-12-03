@@ -23,7 +23,7 @@ public class StreamingController {
     @GetMapping("/{songId}/manifest.m3u8")
     @CrossOrigin
     public void getSongManifest(@PathVariable(value = "songId") Long songId, HttpServletResponse response) throws SongNotFoundByIdException, IOException {
-        response.getOutputStream().write(musicStreamingService.getSongManifestFile(songId));
+        writeToResponseOutputStream(response, musicStreamingService.getSongManifestFile(songId));
         response.setContentType("application/x-mpegURL");
     }
 
@@ -33,7 +33,11 @@ public class StreamingController {
                                @PathVariable(value = "segmentNo") Integer segmentNo,
                                HttpServletResponse response) throws SongNotFoundByIdException, IOException{
         response.setContentType("video/MP2T");
-        response.getOutputStream().write(musicStreamingService.getSongSegmentFile(songId, segmentNo));
+        writeToResponseOutputStream(response, musicStreamingService.getSongSegmentFile(songId, segmentNo));
+    }
+
+    private void writeToResponseOutputStream(HttpServletResponse response, byte[] toWrite) throws IOException{
+        response.getOutputStream().write(toWrite);
     }
 
 }

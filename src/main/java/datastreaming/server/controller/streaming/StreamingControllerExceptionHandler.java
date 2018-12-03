@@ -15,8 +15,4 @@ public class StreamingControllerExceptionHandler {
         return ResponseEntity.status(404).body(ex.getExceptionMessageAndId());
     }
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity handleIOException(IOException ex){
-        return ResponseEntity.status(500).body(ex.getMessage());
-    }
 }
